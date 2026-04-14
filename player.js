@@ -413,6 +413,28 @@ async function initializePlayer(client) {
         }
     });
 
+    // Monitor voice state changes
+    client.riffy.on("playerStateUpdate", (player, oldState, newState) => {
+        if (voiceDebug) {
+            console.log(`[ VOICE DEBUG ] playerStateUpdate guild=${player.guildId} connected=${newState.connected}${newState.connected ? ` channel=${player.voiceChannel}` : ''}`);
+        }
+    });
+
+    // Monitor when player connects to voice
+    if (typeof client.riffy.on === 'function') {
+        client.riffy.on("playerConnect", (player) => {
+            if (voiceDebug) {
+                console.log(`[ VOICE DEBUG ] playerConnect guild=${player.guildId} voiceChannel=${player.voiceChannel}`);
+            }
+        });
+        
+        client.riffy.on("playerDisconnect", (player) => {
+            if (voiceDebug) {
+                console.log(`[ VOICE DEBUG ] playerDisconnect guild=${player.guildId}`);
+            }
+        });
+    }
+
     client.riffy.on("trackException", async (player, error) => {
         const langSync = getLangSync();
         const errorMsg = error?.message || 'Unknown error';

@@ -48,6 +48,7 @@ process.on('unhandledRejection', (error) => {
         }
     }
     
+    // Log all other errors including voice connection issues
     console.error(lang.console?.bot?.unhandledRejection || 'Unhandled Rejection:', error);
 });
 
@@ -172,7 +173,13 @@ client.on("raw", (d) => {
             console.log(`[ VOICE DEBUG ] raw=${d.t} guild=${d.d?.guild_id || 'null'} endpoint=${d.d?.endpoint ? 'yes' : 'no'} token=${d.d?.token ? 'yes' : 'no'}`);
         }
     }
-    client.riffy.updateVoiceState(d);
+    try {
+        if (client.riffy && typeof client.riffy.updateVoiceState === 'function') {
+            client.riffy.updateVoiceState(d);
+        }
+    } catch (error) {
+        console.error(`[ VOICE ERROR ] Failed to update voice state for event ${d.t}:`, error.message);
+    }
 });
 
 client.login(config.TOKEN || process.env.TOKEN).catch((e) => {

@@ -23,7 +23,7 @@ const spotifyApi = new SpotifyWebApi({
     clientSecret: config.spotifyClientSecret,
 });
 
-async function waitForPlayerConnection(player, timeoutMs = 7000) {
+async function waitForPlayerConnection(player, timeoutMs = 15000) {
     const startedAt = Date.now();
     while (Date.now() - startedAt < timeoutMs) {
         if (player?.connected) {
@@ -136,9 +136,11 @@ module.exports = {
             await nodeManager.checkAllNodesHealth().catch(() => {});
             await nodeManager.forceConnectAllNodes().catch(() => {});
             await new Promise(res => setTimeout(res, 400));
+            
             let player;
             let attempts = 0;
             const maxAttempts = 3;
+            
             while (attempts < maxAttempts) {
                 await nodeManager.ensureNodeAvailable();
                 try {
@@ -148,6 +150,12 @@ module.exports = {
                         textChannel: interaction.channelId,
                         deaf: true
                     });
+                    
+                    // Validate player was created
+                    if (!player) {
+                        throw new Error('Player creation returned null or undefined');
+                    }
+                    
                     break;
                 } catch (err) {
                     attempts++;
@@ -268,13 +276,43 @@ module.exports = {
                 console.warn(`Playlist truncated: ${tracksToQueue.length} tracks requested, only ${maxTracks} queued`);
             }
 
-            const connected = await waitForPlayerConnection(player);
+            // Aumentar espera para conexión de voz y agregar reintentos
+            let connected = await waitForPlayerConnection(player, 15000);
+            
             if (!connected) {
+                // Reintentar una vez más con pequeño delay
+                await new Promise(res => setTimeout(res, 1000));
+                connected = await waitForPlayerConnection(player, 8000);
+            }
+            
+            if (!connected) {
+                console.error(`[PLAY] Connection failed for guild ${interaction.guildId}, player connected=${player?.connected}`);
                 throw new Error('Voice connection was not established. The bot did not join the voice channel.');
             }
 
-            if (!player.playing && !player.paused) {
-                player.play();
+            // Esperar brevemente y luego reproducir
+            await new Promise(res => setTimeout(res, 300));
+            
+            if (!player.playing && !player.paused && player.queue.length > 0) {
+                try {
+                    player.play();
+                } catch (playError) {
+                    const msg = playError?.message || '';
+                    if (msg.includes('Player connection is not initiated')) {
+                        console.error(`[PLAY] Player connection not initiated after successful connection check for guild ${interaction.guildId}`);
+                        // Esperar más y reintentar
+                        await new Promise(res => setTimeout(res, 1500));
+                        if (player.queue.length > 0 && !player.destroyed) {
+                            try {
+                                player.play();
+                            } catch (retryError) {
+                                throw new Error(`Failed to start playback: ${retryError?.message || 'Unknown error'}`);
+                            }
+                        }
+                    } else {
+                        throw playError;
+                    }
+                }
             }
 
             const successTitle = isPlaylist ? t.success.titlePlaylist : t.success.titleTrack;
