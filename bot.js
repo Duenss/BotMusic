@@ -161,6 +161,22 @@ const loadCommands = () => {
 
 loadCommands();
 
+const commandRegistrationOrder = ['voteskip', 'set', 'clean'];
+client.commandsArray.sort((a, b) => {
+  const indexA = commandRegistrationOrder.indexOf(a.name);
+  const indexB = commandRegistrationOrder.indexOf(b.name);
+
+  if (indexA === -1 && indexB === -1) {
+    return 0;
+  }
+  if (indexA === -1) {
+    return 1;
+  }
+  if (indexB === -1) {
+    return -1;
+  }
+  return indexA - indexB;
+});
 
 client.on("raw", (d) => {
     const { GatewayDispatchEvents } = require("discord.js");
