@@ -26,10 +26,10 @@ module.exports = {
   nodes: [
   {
   name: "JVAMPARD",
-  password: "jvampard",
-  host: "85.215.220.246",
+  password: "youshallnotpass",
+  host: "lavalink.jirayu.net",
   port: 11167,
-  secure: false
+  secure: true
 }
   ]
 }
