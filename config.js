@@ -27,10 +27,11 @@ module.exports = {
   errorLog: "", 
   nodes: [
   {
-  password: "youshallnotpass",
-  host: "lavalink.jirayu.net",
-  port: 13592,
-  secure: false
+  name: "railway",
+  host: "lavalink-2026-production-24f4.up.railway.app",
+  port: 443,
+  password: "646464",
+  secure: true
 }
   ]
 }
