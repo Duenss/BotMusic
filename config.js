@@ -29,7 +29,7 @@ module.exports = {
   {
   name: "railway",
   host: "lavalink-2026-production-24f4.up.railway.app",
-  port: 8080,
+  port: 443,
   password: "646464",
   secure: true
 }
