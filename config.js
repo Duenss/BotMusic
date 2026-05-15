@@ -27,10 +27,10 @@ module.exports = {
   errorLog: "", 
   nodes: [
   {
-  password: "https://seretia.link/discord",
-  host: "lavalinkv4.serenetia.com",
-  port: 443,
-  secure: true
+  password: "youshallnotpass",
+  host: "lavalink.jirayu.net",
+  port: 13592,
+  secure: false
 }
   ]
 }
