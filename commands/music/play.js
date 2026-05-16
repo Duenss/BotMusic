@@ -112,6 +112,7 @@ module.exports = {
             }
 
             const userVoiceChannel = interaction.member.voice.channelId;
+            console.log(`[PLAY] Starting /play for guild=${interaction.guildId} user=${interaction.user?.id} channel=${userVoiceChannel} existingPlayer=${!!existingPlayer}`);
             
             if (existingPlayer && existingPlayer.voiceChannel !== userVoiceChannel) {
                 try {
@@ -150,6 +151,7 @@ module.exports = {
                         textChannel: interaction.channelId,
                         deaf: true
                     });
+                    console.log(`[PLAY] Created player connection for guild=${interaction.guildId} voiceChannel=${userVoiceChannel}`);
                     
                     // Validate player was created
                     if (!player) {
@@ -290,12 +292,15 @@ module.exports = {
                 throw new Error('Voice connection was not established. The bot did not join the voice channel.');
             }
 
+            console.log(`[PLAY] Voice connection ready for guild=${interaction.guildId}, connected=${player?.connected}`);
             // Esperar brevemente y luego reproducir
             await new Promise(res => setTimeout(res, 300));
             
             if (!player.playing && !player.paused && player.queue.length > 0) {
                 try {
-                    await player.play(player.queue[0]);
+                    const nextTrack = player.queue[0];
+                    console.log(`[PLAY] Starting playback for guild=${interaction.guildId} track=${nextTrack?.info?.title || 'unknown'} uri=${nextTrack?.info?.uri || 'unknown'}`);
+                    await player.play(nextTrack);
                 } catch (playError) {
                     const msg = playError?.message || '';
                     if (msg.includes('Player connection is not initiated')) {

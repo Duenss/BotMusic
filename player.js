@@ -508,6 +508,8 @@ async function initializePlayer(client) {
             return;
         }
 
+        console.log(`[PLAYER] trackStart guild=${player.guildId} title=${track.info.title || 'unknown'} source=${track.info.sourceName || 'unknown'} uri=${track.info.uri || 'unknown'} voiceChannel=${player.voiceChannel}`);
+
         await new Promise(resolve => setTimeout(resolve, 200));
 
         const currentPlayer = client.riffy.players.get(player.guildId);
