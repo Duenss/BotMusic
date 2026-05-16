@@ -295,7 +295,7 @@ module.exports = {
             
             if (!player.playing && !player.paused && player.queue.length > 0) {
                 try {
-                    player.play(player.queue[0]);
+                    await player.play(player.queue[0]);
                 } catch (playError) {
                     const msg = playError?.message || '';
                     if (msg.includes('Player connection is not initiated')) {
@@ -304,7 +304,7 @@ module.exports = {
                         await new Promise(res => setTimeout(res, 1500));
                         if (player.queue.length > 0 && !player.destroyed) {
                             try {
-                                player.play(player.queue[0]);
+                                await player.play(player.queue[0]);
                             } catch (retryError) {
                                 throw new Error(`Failed to start playback: ${retryError?.message || 'Unknown error'}`);
                             }

@@ -264,7 +264,7 @@ module.exports = {
                     connectionAttempts++;
                 }
 
-                if (!player.playing && !player.paused) player.play(player.queue[0]);
+                if (!player.playing && !player.paused) await player.play(player.queue[0]);
 
                 collector.stop();
                 setTimeout(() => {

@@ -206,7 +206,7 @@ module.exports = {
             }
 
             if (!player.playing && !player.paused) {
-                player.play(player.queue[0]);
+                await player.play(player.queue[0]);
             }
 
             const successCard = buildPaleCard(
