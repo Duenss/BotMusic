@@ -955,10 +955,23 @@ function setupCollector(client, player, channel, message) {
             return;
         }
 
-        const deferred = await safeDeferUpdate(i);
-        if (!deferred && !i.deferred && !i.replied) return;
+try {
+      const deferred = await safeDeferUpdate(i);
+      if (!deferred && !i.deferred && !i.replied) return;
 
-        await handleInteraction(client, i, player, channel);
+      await handleInteraction(client, i, player, channel);
+    } catch (error) {
+      console.error(`[ PLAYER ] Component handling error for ${i.customId} in guild ${player.guildId}:`, error);
+      try {
+        if (!i.deferred && !i.replied) {
+          await i.reply({ content: '⚠️ Failed to handle this button interaction. Please try again.', flags: MessageFlags.Ephemeral });
+        } else {
+          await i.followUp({ content: '⚠️ Failed to handle this button interaction. Please try again.', flags: MessageFlags.Ephemeral });
+        }
+      } catch (_err) {
+        console.error('[ PLAYER ] Failed to send fallback button error response:', _err);
+      }
+    }
     });
 
     collector.on('end', () => {
@@ -993,10 +1006,17 @@ async function handleInteraction(client, i, player, channel) {
             await sendEmbed(channel, t.controls?.queueCleared || "🗑️ **Queue has been cleared!**");
             break;
         case 'stopTrack':
-            await cleanupTrackMessages(client, player);
-            player.stop();
-            player.destroy();
-            await sendEmbed(channel, t.controls?.playbackStopped || '⏹️ **Playback has been stopped and player destroyed!**');
+            try {
+                await cleanupTrackMessages(client, player);
+                if (player && !player.destroyed) {
+                    if (typeof player.stop === 'function') player.stop();
+                    if (typeof player.destroy === 'function') player.destroy();
+                }
+                await sendEmbed(channel, t.controls?.playbackStopped || '⏹️ **Playback has been stopped and player destroyed!**');
+            } catch (error) {
+                console.error(`[ PLAYER ] stopTrack action failed for guild ${player.guildId}:`, error);
+                await sendEmbed(channel, t.controls?.stopError || '⚠️ **Failed to stop playback. Please try again.**');
+            }
             break;
         case 'togglePlayback':
             try {
