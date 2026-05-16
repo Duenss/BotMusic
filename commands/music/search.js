@@ -143,6 +143,7 @@ module.exports = {
                 resolve = await client.riffy.resolve({ query, requester: interaction.user.username });
             } catch (err) {
                 const msg = err?.message || '';
+                console.error(`[SEARCH] Resolve error for query=${query}:`, err?.message || err);
                 if (msg.includes('fetch failed') || msg.includes('No nodes are available') || (err.cause && err.cause.code === 'ECONNREFUSED')) {
                     await nodeManager.reconnectNodesNow?.(5000).catch(() => {});
                     await nodeManager.ensureNodeAvailable();
@@ -152,7 +153,9 @@ module.exports = {
                 }
             }
 
+            console.log(`[SEARCH] resolve result for query=${query} loadType=${resolve?.loadType || 'none'} tracks=${Array.isArray(resolve?.tracks) ? resolve.tracks.length : 'invalid'}`);
             if (!resolve || typeof resolve !== 'object' || !Array.isArray(resolve.tracks)) {
+                console.error('[SEARCH] Invalid resolve response:', resolve);
                 return sendErrorResponse(
                     interaction,
                     t.noResults.title + '\n\n' +
@@ -175,6 +178,7 @@ module.exports = {
             const tracks = resolve.tracks.slice(0, 5);
             
             if (tracks.length === 0) {
+                console.error('[SEARCH] resolve returned zero tracks for query:', query, 'resolve:', resolve);
                 return sendErrorResponse(
                     interaction,
                     t.noResults.title + '\n\n' +

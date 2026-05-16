@@ -224,6 +224,7 @@ module.exports = {
                 }
 
                 if (!resolve || typeof resolve !== 'object' || !Array.isArray(resolve.tracks)) {
+                    console.error('[PLAY] Invalid resolve response for query:', query, 'resolve:', resolve);
                     return sendErrorResponse(
                         interaction,
                         t.invalidResponse.title + '\n\n' +
@@ -241,11 +242,22 @@ module.exports = {
                         requesters.set(track.info.uri, interaction.user.username);
                     }
                 } else if (resolve.loadType === 'search' || resolve.loadType === 'track') {
+                    if (!resolve.tracks.length) {
+                        console.error('[PLAY] resolve returned no tracks for query:', query, 'resolve:', resolve);
+                        return sendErrorResponse(
+                            interaction,
+                            t.noResults.title + '\n\n' +
+                            t.noResults.message + '\n' +
+                            t.noResults.note,
+                            5000
+                        );
+                    }
                     const track = resolve.tracks.shift();
                     track.info.requester = interaction.user.username;
                     player.queue.add(track);
                     requesters.set(track.info.uri, interaction.user.username);
                 } else {
+                    console.error('[PLAY] Unexpected resolve loadType for query:', query, 'loadType:', resolve.loadType, 'resolve:', resolve);
                     return sendErrorResponse(
                         interaction,
                         t.noResults.title + '\n\n' +
