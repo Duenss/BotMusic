@@ -343,6 +343,21 @@ module.exports = {
             }, 3000);
 
         } catch (error) {
+            console.error(`[PLAY] Failed to process /play for guild=${interaction.guildId} user=${interaction.user?.id}`, {
+                query,
+                existingPlayer: !!existingPlayer,
+                playerConnected: player?.connected,
+                voiceChannel: interaction.member.voice.channelId,
+                queueLength: player?.queue?.length,
+                isPlaylist,
+                errorName: error?.name,
+                errorCode: error?.code,
+                errorMessage: error?.message
+            });
+            if (config.debugErrors === true && error?.stack) {
+                console.error(`[PLAY] Stack trace:\n${error.stack}`);
+            }
+
             const lang = await getLang(interaction.guildId).catch(() => ({ music: { play: { errors: {} } } }));
             const t = lang.music?.play?.errors || {};
             

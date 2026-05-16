@@ -205,6 +205,14 @@ async function sendSuccessResponse(interaction, message, color = null, deleteAft
 
 async function handleCommandError(interaction, error, commandName, customMessage = null) {
     console.error(`Error processing ${commandName} command:`, error);
+    if (config.debugErrors === true) {
+        console.error(`Error details for ${commandName}:`, {
+            name: error?.name,
+            message: error?.message,
+            code: error?.code,
+            stack: error?.stack?.split('\n').slice(0, 5).join('\n')
+        });
+    }
     
     const { getLang, getLangSync } = require('./languageLoader.js');
 
@@ -224,10 +232,17 @@ async function handleCommandError(interaction, error, commandName, customMessage
         commandError: "❌ An error occurred while processing the {commandName} command."
     };
     
-    const errorMessage = customMessage || 
+    let errorMessage = customMessage || 
         `${responseHandler.defaultError.title}\n\n` +
         `${responseHandler.defaultError.message}\n` +
         `${responseHandler.defaultError.note}`;
+
+    if (config.debugErrors === true && error) {
+        const errorCode = error?.code ? ` (${error.code})` : '';
+        const shortStack = error?.stack ? error.stack.split('\n')[1]?.trim() : null;
+        const debugText = `Debug: ${error.name || 'Error'}${errorCode} - ${error.message || 'No message'}${shortStack ? ` | ${shortStack}` : ''}`;
+        errorMessage += `\n\n${debugText}`;
+    }
 
     const errorContainer = cardFromMessage(errorMessage, 'Error');
 

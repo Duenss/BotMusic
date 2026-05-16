@@ -24,6 +24,9 @@ module.exports = {
   generateSongCard: true,  // custom song card image, if false uses thumbnail
   metadataTag: true,  // If true, always show Song Details even when the card image is present
   lowMemoryMode: true,   // Performance optimizations for low-memory environments (512MB RAM)
+  debugErrors: true,     // Show detailed error info in console and responses for faster debugging
+  enableVoiceChannelIdPatch: true,
+  voiceDebug: false,
   errorLog: "", 
   nodes: [
   {
