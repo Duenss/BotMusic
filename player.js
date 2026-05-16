@@ -1136,7 +1136,7 @@ async function handlePlayerModalSubmit(client, modal, player, channel) {
                 return;
             }
 
-            const resolve = await client.riffy.resolve({ query, requester: modal.user.username });
+            const resolve = await client.riffy.resolve({ query: query.startsWith("http") ? query : `ytsearch:${query}`, requester: modal.user.username });
             if (!resolve || !Array.isArray(resolve.tracks) || !resolve.tracks.length) {
                 await modal.editReply({ content: '❌ No results found for that query.' }).catch(() => {});
                 return;
@@ -1158,7 +1158,7 @@ async function handlePlayerModalSubmit(client, modal, player, channel) {
                 added = 1;
             }
 
-            if (!player.playing && !player.paused && !player.current) {
+            if (!player.playing && !player.paused ) {
                 player.play();
             }
 
