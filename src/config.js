@@ -34,9 +34,9 @@ function buildFromEnv() {
     logs: process.env.LOGS_CHANNEL || "",
     node_source: process.env.BOT_NODE_SOURCE || "spsearch",
     links: {
-      support: process.env.SUPPORT_LINK || "https://discord.gg/aerox",
-      invite: process.env.INVITE_LINK || "https://discord.gg/aerox",
-      guild: process.env.GUILD_LINK || "https://discord.gg/aerox",
+      support: process.env.SUPPORT_LINK || "https://discord.gg/pdJDxSBA5v",
+      invite: process.env.INVITE_LINK || "https://discord.gg/pdJDxSBA5v",
+      guild: process.env.GUILD_LINK || "https://discord.gg/pdJDxSBA5v",
     },
     Webhooks: {
       black: process.env.WEBHOOK_BLACK || "",
