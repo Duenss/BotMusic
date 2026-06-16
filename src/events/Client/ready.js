@@ -103,26 +103,14 @@ module.exports = {
       console.log("\n⚠️ WARNING: No slash commands to deploy! client.slashCommands.size = 0\n");
     }
 
-    setInterval(() => {
-      const totalMembers = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
-      const statuses = [
-        `Serving ${client.guilds.cache.size} Guilds | ${client.users.cache.size} Users`,
-        `Use /help to get started`,
-        `Pure Musical Bliss!`,
-        `High Quality | 24/7 Music`
-      ];
-
-      const status = statuses[Math.floor(Math.random() * statuses.length)];
-
-      client.user.setPresence({
-        activities: [
-          {
-            name: status,
-            type: ActivityType.Custom,
-          },
-        ],
-        status: "online",
-      });
-    }, 7000);
+    client.user.setPresence({
+  activities: [
+    {
+      name: "Core Hacks Full Music",
+      type: ActivityType.Custom,
+    },
+  ],
+  status: "online",
+});
   },
 };
