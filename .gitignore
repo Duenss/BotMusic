@@ -1,37 +1,27 @@
 # Dependencies
 node_modules/
-package-lock.json
 
-# Environment variables
+# Environment & secrets
 .env
-.env.local
-.env.*
-*.env
+src/config.json
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
+# SQLite databases
+*.sqlite
+*.db
+*.sqlite3
 
 # Logs
 *.log
 logs/
 
-# Temporary files
-tmp/
-*.tmp
+# OS files
+.DS_Store
+Thumbs.db
 
-# Archive files (may contain secrets)
-*.rar
-*.zip
-*.7z
+# Editor
+.vscode/
+.idea/
 
-# Build files
+# Build / temp
 dist/
-build/
-
+tmp/

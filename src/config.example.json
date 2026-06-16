@@ -1,0 +1,46 @@
+{
+  "token": "YOUR_BOT_TOKEN",
+  "prefix": ".",
+  "ownerID": [
+    "YOUR_USER_ID"
+  ],
+  "SpotifyID": "YOUR_SPOTIFY_CLIENT_ID",
+  "SpotifySecret": "YOUR_SPOTIFY_CLIENT_SECRET",
+  "LastFmKey": "YOUR_LASTFM_KEY",
+  "LastFmSecret": "YOUR_LASTFM_SECRET",
+  "color": "#00D4FF",
+  "logs": "",
+  "node_source": "spsearch",
+  "links": {
+    "support": "https://discord.gg/yourserver",
+    "invite": "https://discord.gg/yourserver",
+    "guild": "https://discord.gg/yourserver"
+  },
+  "Webhooks": {
+    "black": "",
+    "player_create": "",
+    "player_delete": "",
+    "guild_join": "",
+    "guild_leave": "",
+    "cmdrun": ""
+  },
+  "nodes": [
+    {
+      "name": "Groove",
+      "url": "your-lavalink-host:443",
+      "auth": "your-lavalink-password",
+      "secure": true
+    }
+  ],
+  "node_options": {
+    "moveOnDisconnect": true,
+    "resume": true,
+    "resumeTimeout": 60,
+    "resumeByLibrary": true,
+    "reconnectTries": 15,
+    "reconnectInterval": 10,
+    "restTimeout": 60000,
+    "voiceConnectionTimeout": 30000,
+    "userAgent": "Groove"
+  }
+}

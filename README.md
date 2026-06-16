@@ -1,330 +1,210 @@
-<div align="center">
+# Groove — Discord Music & Utility Bot
 
-![Logo](https://i.ibb.co/GfTxbJfC/7-edited.png)
-
-# 🎵 PrimeMusic - Advanced Lavalink Music Bot
-
-![Version](https://img.shields.io/badge/version-1.4-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Node](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen.svg)
-![Discord.js](https://img.shields.io/badge/discord.js-14.25.1-blue.svg)
-
-**A feature-rich, high-performance Discord music bot built with Lavalink and Discord.js v2 Components**
+> **Originally developed by [not.blaxe](https://discord.com/users/689047015665172569)**
+> This project was leaked by a friend of the developer. Following the leak, **AeroX Development** has open-sourced it with the consent of the original developer.
+>
+> **AeroX Development:** [discord.gg/aerox](https://discord.gg/aerox)
 
 ---
 
-### 🔗 Connect With Me
+## Overview
 
-[![YouTube](https://img.shields.io/badge/YouTube-GlaceYT-red?style=for-the-badge&logo=youtube)](https://youtube.com/@GlaceYT)
-[![Website](https://img.shields.io/badge/Website-GlaceYT.com-blue?style=for-the-badge&logo=google-chrome)](https://glaceyt.com)
-[![Replit](https://img.shields.io/badge/Replit-GlaceYT-orange?style=for-the-badge&logo=replit)](https://replit.com/@GlaceYT)
-[![Discord](https://img.shields.io/badge/Discord-Support%20Server-5865F2?style=for-the-badge&logo=discord)](https://discord.gg/xQF9f9yUEM)
+Groove is a feature-rich Discord bot built with discord.js v14, centered around high-quality music playback via Lavalink (Kazagumo/Shoukaku). It also includes moderation, automod, invite tracking, giveaways, and server utilities. Uses hybrid sharding for scalability and SQLite for persistent storage.
 
 ---
 
-[Features](#-features) • [Installation](#-installation) • [Configuration](#-configuration) • [Usage](#-usage) • [Support](#-support)
+## Features
 
-</div>
-
----
-
-## ✨ Features
-
-### 🎶 Music Features
-- **Multi-Platform Support**: YouTube, SoundCloud, Spotify (links, text search, and playlists)
-- **High-Quality Audio**: Optimized for smooth playback even on low-memory hosting (512MB+)
-- **Queue Management**: Advanced queue system with shuffle, loop, and clear options
-- **Playlist Support**: Create, save, and manage custom playlists
-- **Autoplay**: Intelligent autoplay system for continuous music
-- **24/7 Mode**: Keep the bot in voice channels 24/7
-- **Music Cards**: Beautiful custom-generated music cards with thumbnails
-- **Live Lyrics**: Real-time synchronized lyrics display
-- **Track History**: Automatic history tracking for played songs
-
-### 🎨 User Experience
-- **Multi-Language Support**: 20+ languages available [ soon ]
-- **Interactive Controls**: Button-based controls for easy music management
-- **Progress Tracking**: Real-time progress bars and track information
-- **Visual Feedback**: Professional embeds and status updates
-- **Error Handling**: Graceful error handling with user-friendly messages
-
-### ⚡ Performance Optimizations
-- **Low-Memory Mode**: Optimized for hosting environments with limited RAM (512MB+)
-- **Efficient Updates**: Reduced update frequencies to minimize CPU/memory usage
-- **Smart Caching**: Optimized thumbnail fetching with fallback systems
-- **Resource Management**: Automatic cleanup and memory optimization
-
-### 🛠️ Advanced Features
-- **Filter System**: Multiple audio filters (bassboost, nightcore, karaoke, etc.)
-- **Volume Control**: Precise volume adjustment (10-100%)
-- **Seek Functionality**: Jump to specific positions in tracks
-- **Vote Skip**: Democratic skip system for queue management
-- **Track Info**: Detailed track information display
+- **Music** — Play from YouTube Music, Spotify, Apple Music, Deezer, and more. Full queue controls, filters, autoplay, lyrics, liked songs, 24/7 mode, now-playing cards
+- **Moderation** — Ban, kick, mute, purge, lock/hide channels, nuke, snipe, role management
+- **Automod** — Anti-link, anti-spam, anti-mention, anti-caps, anti-emoji, anti-NSFW with heat-based punishments
+- **Invite Tracking** — Full invite tracking, leaderboard, fake/rejoin detection, invite logs
+- **Giveaways** — Start, end, and reroll giveaways
+- **User Profiles** — Bio, badges, friends, marry, rank system, profile cards
+- **Information & Utility** — User/server info, avatar, audit logs, timers, and more
+- **Owner Tools** — Blacklist, no-prefix access, server list, reload, restart, backup
 
 ---
 
-## 📋 Requirements
+## Prerequisites
 
-- **Node.js**: v16.0.0 or higher
-- **Discord Bot Token**: Get one from [Discord Developer Portal](https://discord.com/developers/applications)
-- **Lavalink Server**: Self-hosted or use a public Lavalink node
-- **MongoDB Database**: For playlist and history storage
-- **Spotify API** (Optional): For Spotify support
+- Node.js v18+
+- A running Lavalink server (v4 recommended)
+- Discord bot token with intents: `GUILDS`, `GUILD_MEMBERS`, `GUILD_MESSAGES`, `GUILD_VOICE_STATES`, `MESSAGE_CONTENT`, `GUILD_INVITES`, `GUILD_MESSAGE_REACTIONS`
 
 ---
 
-## 🚀 Installation
+## Installation
 
-### 1. Clone the Repository
 ```bash
-git clone https://github.com/GlaceYT/PrimeMusic-Lavalink.git
-cd PrimeMusic-Lavalink
-```
-
-### 2. Install Dependencies
-```bash
+git clone https://github.com/AeroXDevelopment/groove.git
+cd groove
 npm install
 ```
 
-### 3. Configure Environment
+---
 
-Create a `.env` file in the root directory:
-```env
-TOKEN=your_discord_bot_token_here
-```
+## Configuration
 
-### 4. Configure `config.js`
+Create `src/config.json`:
 
-Edit `config.js` with your settings:
-
-```javascript
-module.exports = {
-  TOKEN: "", // Leave empty if using .env file
-  language: "en",
-  ownerID: ["your_user_id_here"],
-  mongodbUri: "your_mongodb_connection_string",
-  spotifyClientId: "your_spotify_client_id", // Optional
-  spotifyClientSecret: "your_spotify_client_secret", // Optional
-  nodes: [
-     {
-            name: "GlaceYT",
-            password: "glace",
-            host: "us-01.strixnodes.com",
-            port: 8003,
-            secure: false
+```json
+{
+  "token": "YOUR_BOT_TOKEN",
+  "prefix": "!",
+  "ownerID": ["YOUR_USER_ID"],
+  "color": "#HEX_COLOR",
+  "nodes": [
+    {
+      "name": "Main",
+      "url": "localhost:2333",
+      "auth": "yourlavalinksecret",
+      "secure": false
     }
-  ]
+  ],
+  "spotify": {
+    "clientId": "YOUR_SPOTIFY_CLIENT_ID",
+    "clientSecret": "YOUR_SPOTIFY_CLIENT_SECRET"
+  }
 }
 ```
 
-### 5. Enable Discord Intents
+---
 
-In the [Discord Developer Portal](https://discord.com/developers/applications):
-- Go to your bot application
-- Navigate to **Bot** → **Privileged Gateway Intents**
-- Enable:
-  - ✅ **MESSAGE CONTENT INTENT**
-  - ✅ **SERVER MEMBERS INTENT**
+## Commands
 
-### 6. Run the Bot
+### Music
+| Command | Description |
+|---|---|
+| `play` | Play a track or playlist |
+| `pause` / `resume` | Pause or resume playback |
+| `skip` / `forceskip` | Skip the current track |
+| `skipto` | Skip to a queue position |
+| `previous` | Play the previous track |
+| `stop` | Stop and clear the queue |
+| `queue` | Show the queue |
+| `nowplaying` | Show the current track |
+| `volume` | Set playback volume |
+| `loop` | Toggle loop mode |
+| `shuffle` | Shuffle the queue |
+| `seek` / `rewind` / `forward` | Seek controls |
+| `speed` | Set playback speed |
+| `remove` / `clearqueue` / `move` | Queue management |
+| `lyrics` | Fetch song lyrics |
+| `search` | Search interactively |
+| `grab` | Send track info to DMs |
+| `replay` | Restart current track |
+| `sleep` | Set a sleep timer |
+| `autoplay` | Toggle autoplay |
+| `artistradio` | Start an artist radio |
+| `similar` / `mood` | Discover related tracks |
+| `history` | Recently played tracks |
+| `join` / `leave` | Join or leave voice |
+| `filter` | Apply audio filters |
+| `forcefix` | Fix a broken player |
+
+### Liked Songs
+| Command | Description |
+|---|---|
+| `like` / `unlike` | Like or unlike the current track |
+| `likeall` | Like everything in the queue |
+| `showliked` | View your liked songs |
+| `playliked` | Play your liked songs |
+
+### Moderation
+| Command | Description |
+|---|---|
+| `ban` / `unban` | Ban or unban a user |
+| `kick` | Kick a user |
+| `mute` / `unmute` | Mute or unmute a user |
+| `purge` | Bulk delete messages |
+| `snipe` | View last deleted message |
+| `lock` / `unlock` / `lockall` / `unlockall` | Lock channels |
+| `hide` / `unhide` / `hideall` / `unhideall` | Hide channels |
+| `nuke` | Recreate a channel |
+| `rename` | Rename a channel |
+| `role` | Add or remove a role |
+
+### Configuration
+| Command | Description |
+|---|---|
+| `setprefix` | Change server prefix |
+| `ignore` | Toggle ignored channels |
+| `247` | Toggle 24/7 mode |
+| `source` | Set default music source |
+| `automod` | Configure automod |
+
+### Invite Tracking
+| Command | Description |
+|---|---|
+| `invites` | Check your invites |
+| `invited` | Who invited a user |
+| `inviter` | Who a user has invited |
+| `invitecodes` | Your active invite codes |
+| `leaderboard` | Invite leaderboard |
+| `invitetracking` | Enable/disable tracking |
+| `clearinvites` / `resetmyinvites` | Reset invites |
+
+### Giveaways
+| Command | Description |
+|---|---|
+| `gstart` | Start a giveaway |
+| `greroll` | Reroll winners |
+| `gend` | End a giveaway early |
+
+### Information
+| Command | Description |
+|---|---|
+| `userinfo` / `serverinfo` | User or server info |
+| `avatar` / `banner` | Avatars and banners |
+| `roleinfo` / `channelinfo` | Role or channel info |
+| `membercount` / `boostcount` | Server counts |
+| `audit` | Recent audit log entries |
+| `presence` | User's current activity |
+| `firstmsg` | First message in a channel |
+| `checkvanity` | Check a vanity URL |
+
+### Utility
+| Command | Description |
+|---|---|
+| `help` | Command list |
+| `ping` | Bot latency |
+| `stats` / `uptime` | Bot stats |
+| `bio` / `profile` | User bio and profile card |
+| `invite` / `support` | Bot links |
+| `timer` | Set a reminder |
+
+### Owner
+| Command | Description |
+|---|---|
+| `blacklist` | Blacklist a user |
+| `nopaccess` | Grant no-prefix access |
+| `serverlist` / `leaveserver` | Server management |
+| `reload` / `restart` | Reload or restart the bot |
+| `node` / `team` | Node and team info |
+| `backup` / `badge` / `branding` | Misc owner tools |
+
+---
+
+## Running
+
 ```bash
+# Production
 npm start
+
+# Development
+npm run dev
 ```
 
 ---
 
-## ⚙️ Configuration
+## Credits
 
-### Basic Settings
+| | |
+|---|---|
+| Original Developer | [not.blaxe](https://discord.com/users/689047015665172569) |
+| Open Sourced By | [AeroX Development](https://discord.gg/aerox) |
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `TOKEN` | Discord bot token | `""` (use .env) |
-| `language` | Default bot language | `"en"` |
-| `ownerID` | Bot owner user IDs | `[]` |
-| `mongodbUri` | MongoDB connection string | Required |
-| `embedColor` | Embed accent color (hex) | `"#1db954"` |
-| `activityName` | Bot activity text | `"YouTube Music"` |
-| `activityType` | Activity type | `"LISTENING"` |
+This project was originally private and was leaked by a friend of the developer. AeroX Development has open-sourced it with the full consent of not.blaxe.
 
-### Performance Settings
-
-| Option | Description | Default |
-|--------|-------------|---------|
-| `lowMemoryMode` | Enable low-memory optimizations | `true` |
-| `generateSongCard` | Generate custom music cards | `true` |
-| `showVisualizer` | Show audio visualizer | `false` |
-| `showProgressBar` | Show progress bar in embeds | `false` |
-
-### Lavalink Nodes
-
-Configure your Lavalink nodes in the `nodes` array:
-
-```javascript
-nodes: [
-  {
-    name: "NodeName",
-    password: "youshallnotpass",
-    host: "localhost",
-    port: 2333,
-    secure: false
-  }
-]
-```
-
----
-
-## 🎮 Usage
-
-### Basic Commands
-
-| Command | Description |
-|---------|-------------|
-| `/play <song>` | Play a song from YouTube, SoundCloud, or Spotify |
-| `/pause` | Pause the current track |
-| `/resume` | Resume the paused track |
-| `/skip` | Skip to the next song |
-| `/stop` | Stop playback and clear queue |
-| `/queue` | View the current queue |
-| `/volume <1-100>` | Adjust playback volume |
-| `/nowplaying` | Show current track information |
-
-### Advanced Commands
-
-| Command | Description |
-|---------|-------------|
-| `/shuffle` | Shuffle the queue |
-| `/loop` | Toggle loop mode (track/queue) |
-| `/seek <time>` | Jump to a specific time in the track |
-| `/filters` | Apply audio filters |
-| `/autoplay` | Toggle autoplay mode |
-| `/24/7` | Toggle 24/7 mode |
-| `/playlist create <name>` | Create a custom playlist |
-| `/playlist savequeue <name>` | Save current queue as playlist |
-
----
-
-## 🌍 Supported Languages
-
-The bot supports **11 languages**:
-
-- 🇺🇸 English (en)
-- 🇪🇸 Spanish (es)
-- 🇫🇷 French (fr)
-- 🇩🇪 German (de)
-- 🇨🇳 Chinese Simplified (cn)
-- 🇯🇵 Japanese (ja)
-- 🇰🇷 Korean (ko)
-- 🇷🇺 Russian (ru)
-- 🇵🇹 Portuguese (pt)
-- 🇸🇦 Arabic (ar)
-- 🇻🇳 Vietnamese (vi)
-
-Change language with: `/language <language_code>`
-
----
-
-## 🎵 Supported Platforms
-
-- **YouTube** - Videos, playlists, and search
-- **SoundCloud** - Tracks and playlists
-- **Spotify** - Tracks, albums, and playlists (requires API credentials)
-
----
-
-## ⚡ Performance Optimizations
-
-This bot is optimized for low-memory hosting environments:
-
-- **Reduced Update Frequency**: Progress updates every 15 seconds (instead of 5)
-- **Smart Card Generation**: Music cards regenerate every 90 seconds
-- **Efficient Health Checks**: Optimized monitoring intervals
-- **Memory Management**: Automatic cleanup and resource optimization
-- **Fast Thumbnail Fetching**: Direct YouTube URLs with fallback system
-
-### Recommended Hosting Specs
-
-- **Minimum**: 512MB RAM, 1 CPU core
-- **Recommended**: 1GB+ RAM, 2+ CPU cores
-- **Node.js**: v16.0.0 or higher
-
----
-
-## 📁 Project Structure
-
-```
-PrimeMusic-Lavalink/
-├── commands/          # Bot commands
-│   ├── basic/         # Basic commands (help, ping, stats)
-│   ├── music/         # Music commands (play, pause, skip)
-│   ├── playlist/      # Playlist management
-│   └── utility/       # Utility commands
-├── events/            # Discord event handlers
-├── languages/         # Language files
-├── utils/             # Utility functions
-│   ├── musicCard.js   # Music card generator
-│   └── ...
-├── UI/                # UI assets (icons, colors)
-├── config.js          # Bot configuration
-├── bot.js             # Main bot file
-├── player.js          # Music player logic
-├── lavalink.js        # Lavalink connection manager
-└── index.js           # Entry point
-```
-
----
-
-## 🐛 Troubleshooting
-
-### Bot doesn't respond to commands
-- Check if bot has proper permissions
-- Verify MESSAGE CONTENT INTENT is enabled
-- Ensure bot is online and connected
-
-### Music doesn't play
-- Verify Lavalink node is running and accessible
-- Check node configuration in `config.js`
-- Ensure bot has permission to join voice channels
-
-### Thumbnails not loading
-- Bot will automatically use music icon placeholder
-- Check internet connection for thumbnail fetching
-- YouTube thumbnails are fetched automatically from track URI
-
-### High memory usage
-- Enable `lowMemoryMode: true` in config
-- Disable `showVisualizer` if not needed
-- Consider using `generateSongCard: false` for minimal memory usage
-
----
-
-## 🤝 Support
-
-- **Discord Server**: [Join Support Server](https://discord.gg/xQF9f9yUEM)
-- **Issues**: [GitHub Issues](https://github.com/GlaceYT/PrimeMusic-Lavalink/issues)
-- **Author**: GlaceYT
-
----
-
-## 📝 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Credits
-
-- **Created by**: GlaceYT (Shiva)
-- **Lavalink**: [lavalink-devs/Lavalink](https://github.com/lavalink-devs/Lavalink)
-- **Discord.js**: [discordjs/discord.js](https://github.com/discordjs/discord.js)
-- **Riffy**: Lavalink client library
-
----
-
-<div align="center">
-
-**⭐ Star this repository if you find it helpful!**
-
-Made with ❤️ by GlaceYT
-
-</div>
+**Join us:** [discord.gg/aerox](https://discord.gg/aerox)
